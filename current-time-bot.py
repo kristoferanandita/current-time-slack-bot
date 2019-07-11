@@ -29,7 +29,7 @@ def is_request_valid(request):
         sig_basestring,
         hashlib.sha256
     ).hexdigest()
-    slack_signature = request.headers['X-Slack-Signature']
+    slack_signature = request.headers.get('X-Slack-Signature')
     if hmac.compare_digest(my_signature, slack_signature):
         return True
 
@@ -46,5 +46,8 @@ def time():
         response_type='in_channel',
         text='The current time is ' + current_time,
     )
+
+    current_time2 = time.strftime("%H:%M", time.localtime())
+    assert current_time == current_time2
 
 
